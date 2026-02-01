@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Maison des Cyclades</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
         /* --- CHARGEMENT SÉCURISÉ DE LA POLICE --- */
         @font-face {
             font-family: 'CustomImpact';
-            src: url('impact.ttf') format('truetype'); 
+            src: url('impact.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
             font-display: swap;
@@ -31,11 +31,11 @@
 
         :root {
             --blue: #19539D;
-            --blue-light-border: #9cb5d3; 
+            --blue-light-border: #9cb5d3;
             --yellow: #FFD72E;
             --bg-light: #F8FEFF;
             --font-main: 'Poppins', sans-serif;
-            --font-title: 'CustomImpact', sans-serif; 
+            --font-title: 'CustomImpact', sans-serif;
         }
 
         body {
@@ -69,7 +69,7 @@
             background-image: url('cyclades-02.jpg');
             background-size: cover;
             background-position: center;
-            background-color: #2c2c2c; 
+            background-color: #2c2c2c;
         }
 
         .certifs-btn {
@@ -91,7 +91,7 @@
             font-size: 12px;
             letter-spacing: 0.5px;
         }
-        
+
         .certifs-btn i { font-size: 13px; }
 
         /* --- MODALES (Certifs & Plats) --- */
@@ -106,7 +106,7 @@
             z-index: 1000;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(3px); /* Petit effet de flou moderne */
+            backdrop-filter: blur(3px);
         }
 
         .modal-overlay.active { display: flex; }
@@ -117,9 +117,11 @@
             width: 85%;
             max-width: 320px;
             position: relative;
-            overflow: hidden; /* Pour que l'image ne dépasse pas */
+            overflow: hidden;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             animation: slideUp 0.3s ease-out;
+            max-height: 90vh; /* Sécurité pour petits écrans */
+            overflow-y: auto; /* Scroll si contenu trop long */
         }
 
         @keyframes slideUp {
@@ -132,7 +134,7 @@
             top: 10px;
             right: 15px;
             font-size: 28px;
-            color: white; /* Blanc car souvent sur l'image */
+            color: white;
             cursor: pointer;
             z-index: 20;
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
@@ -200,7 +202,7 @@
         }
 
         .nutrition-content.open {
-            max-height: 150px; /* Hauteur max déroulée */
+            max-height: 150px;
             padding-bottom: 12px;
         }
 
@@ -304,10 +306,9 @@
 
         .menu-item {
             margin-bottom: 24px;
-            cursor: pointer; /* Indique que c'est cliquable */
+            cursor: pointer;
             position: relative;
         }
-        /* Petit feedback visuel au clic sur un plat */
         .menu-item:active { transform: scale(0.98); }
 
         .item-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4px; }
@@ -348,18 +349,18 @@
         <div class="modal-overlay" id="dish-modal">
             <div class="modal-content">
                 <span class="modal-close close-modal">×</span>
-                
+
                 <img src="" alt="Plat" class="dish-image" id="modal-img">
-                
+
                 <div class="dish-details">
                     <h2 class="dish-title" id="modal-title">TITRE DU PLAT</h2>
-                    
+
                     <div class="dish-section-title">INGRÉDIENTS</div>
                     <p class="dish-text" id="modal-ingredients">Liste des ingrédients...</p>
-                    
+
                     <div class="dish-section-title">ALLERGÈNES</div>
                     <p class="dish-text" id="modal-allergens">Aucun allergène signalé.</p>
-                    
+
                     <div class="nutrition-toggle" id="nutrition-toggle">
                         <span>Valeurs Nutritionnelles</span>
                         <i class="fas fa-chevron-down" id="nutrition-icon"></i>
@@ -418,7 +419,7 @@
                     <div class="item-header"><span class="item-name">ASSIETTE DE TARAMA OU TZATZIKI</span><span class="item-price">6 €</span></div>
                     <p class="item-desc">Mézé grec</p>
                 </li>
-                <li class="menu-item" data-id="mezedes">
+                <li class="menu-item" data-id="dolmade1">
                     <div class="item-header"><span class="item-name">DOLMADE1 PETIT MÉZEDES</span><span class="item-price">4.50 €</span></div>
                     <p class="item-desc">Tzatziki, Tarama, Taboulé, Caviar d'aubergine, Chypriote, Féta, Caviar d'artichauts, Hommos, Ktipiti, Olives</p>
                 </li>
@@ -426,10 +427,19 @@
                     <div class="item-header"><span class="item-name">SALADE GRECQUE « XORIATIKI »</span><span class="item-price">7 €</span></div>
                     <p class="item-desc">Salade de tomates, concombres, olives, féta, câpres et huile d'olive</p>
                 </li>
+                <li class="menu-item" data-id="taboule">
+                    <div class="item-header"><span class="item-name">TABOULÉ GREC</span><span class="item-price">7 €</span></div>
+                    <p class="item-desc">Persil, menthe, tomates, boulgour *supplément de 1€ pour les menus</p>
+                </li>
+                <li class="menu-item" data-id="assortiment">
+                    <div class="item-header"><span class="item-name">ASSORTIMENT DE 4 MÉZÉS GRECS</span><span class="item-price">8 €</span></div>
+                    <p class="item-desc">Tzatziki, Tarama, 2 Dolmades, Hommos</p>
+                </li>
             </ul>
 
             <ul id="plats" class="tab-content">
-                <div class="info-note">Avec les accompagnements du jour : Kritharaki (pâtes grecques), Fassolia (haricots), Salade de Serifos (lentilles)</div>
+                <div class="info-note">Avec les accompagnements du jour : Kritharaki (pâtes grecques à la tomates et aux herbes), Fassolia (haricots blancs géants à la tomates et à l'aneth), Salade de Serifos (lentilles, féta, persils, poivrons et raisins de Corinthe)</div>
+
                 <li class="menu-item" data-id="moussaka">
                     <div class="item-header"><span class="item-name">MOUSSAKA</span><span class="item-price">10 €</span></div>
                     <p class="item-desc">Lamelles d'aubergines, viande de bœuf hachée et béchamel</p>
@@ -438,20 +448,101 @@
                     <div class="item-header"><span class="item-name">IMAM</span><span class="item-price">10 €</span></div>
                     <p class="item-desc">Aubergine farcie à la tomate, aux oignons et aux pignons de pin</p>
                 </li>
+                <li class="menu-item" data-id="papoutsakia">
+                    <div class="item-header"><span class="item-name">PAPOUTSAKIA</span><span class="item-price">10 €</span></div>
+                    <p class="item-desc">Aubergine farcie à la viande et béchamel</p>
+                </li>
+                <li class="menu-item" data-id="soutsoukakia">
+                    <div class="item-header"><span class="item-name">SOUTSOUKAKIA</span><span class="item-price">10 €</span></div>
+                    <p class="item-desc">Viande de bœuf parfumée aux épices grecques et à la sauce tomate</p>
+                </li>
+                <li class="menu-item" data-id="keftedes">
+                    <div class="item-header"><span class="item-name">KEFTEDES</span><span class="item-price">10 €</span></div>
+                    <p class="item-desc">3 boulettes aux choix : viande de bœuf aux herbes grecques ou courgette-feta</p>
+                </li>
+                <li class="menu-item" data-id="salade-calamar">
+                    <div class="item-header"><span class="item-name">SALADE</span><span class="item-price">11 €</span></div>
+                    <p class="item-desc">Calamar farci au riz, crevettes, pignons de pin et à la sauce tomate *supplément de 1€ pour les menus</p>
+                </li>
+                <li class="menu-item" data-id="piperia">
+                    <div class="item-header"><span class="item-name">PIPERIA</span><span class="item-price">11 €</span></div>
+                    <p class="item-desc">Poivron farci à la viande, pignons de pin, riz, menthe et aneth *supplément de 1€ pour les menus</p>
+                </li>
             </ul>
-            
+
             <ul id="desserts" class="tab-content">
                 <div class="info-note" style="text-align: center;">TOUS NOS DESSERTS À 5€</div>
+
                 <li class="menu-item" data-id="yaourt">
                     <div class="item-header"><span class="item-name">L'AUTHENTIQUE YAOURT GREC</span><span class="item-price">5 €</span></div>
                     <p class="item-desc">Traditionnel. Servi avec son miel et ses pralines concassées</p>
                 </li>
+                <li class="menu-item" data-id="patisserie">
+                    <div class="item-header"><span class="item-name">1 PÂTISSERIE GRECQUE</span><span class="item-price">5 €</span></div>
+                    <p class="item-desc">Au choix : Baklava ou Kadaif ou Samousada ou Mélomakarona. Accompagné d'un Loukoum de Syros</p>
+                </li>
+                <li class="menu-item" data-id="portokalopita">
+                    <div class="item-header"><span class="item-name">PORTOKALOPITA</span><span class="item-price">5 €</span></div>
+                    <p class="item-desc">Gâteau à l'orange, pate filo</p>
+                </li>
+                <li class="menu-item" data-id="galaktobureko">
+                    <div class="item-header"><span class="item-name">GALAKTOBUREKO</span><span class="item-price">5 €</span></div>
+                    <p class="item-desc">Flan grec au lait parfumé secrètement</p>
+                </li>
+                <li class="menu-item" data-id="chocolatopita">
+                    <div class="item-header"><span class="item-name">CHOCOLATOPITA</span><span class="item-price">5 €</span></div>
+                    <p class="item-desc">Gâteau au chocolat merenda, pate filo</p>
+                </li>
+                <li class="menu-item" data-id="cafe-gourmand">
+                    <div class="item-header"><span class="item-name">CAFÉ GOURMAND</span><span class="item-price">5 €</span></div>
+                    <p class="item-desc">1 loukoum de syros ou 1 kourabie. Accompagné d'un rosekte à la canelle</p>
+                </li>
             </ul>
-             <ul id="boissons" class="tab-content">
+
+            <ul id="boissons" class="tab-content">
+
                 <h3 class="subsection-title">Les Apéritifs</h3>
                 <li class="menu-item" data-id="ouzo">
                     <div class="item-header"><span class="item-name">OUZO PLOMARI</span><span class="item-price">4,50 / 14 €</span></div>
                     <p class="item-desc">4cl / 20cl</p>
+                </li>
+                <li class="menu-item" data-id="muscat">
+                    <div class="item-header"><span class="item-name">MUSCAT DE SAMOS</span><span class="item-price">4,50 €</span></div>
+                    <p class="item-desc">6cl Grand cru</p>
+                </li>
+
+                <h3 class="subsection-title">Les Digestifs</h3>
+                <li class="menu-item" data-id="metaxa">
+                    <div class="item-header"><span class="item-name">METAXA</span><span class="item-price">4,50 €</span></div>
+                    <p class="item-desc">4cl</p>
+                </li>
+                <li class="menu-item" data-id="tsipouro">
+                    <div class="item-header"><span class="item-name">TSIPOURO</span><span class="item-price">4,50 €</span></div>
+                    <p class="item-desc">4cl (Eau de vie grecque)</p>
+                </li>
+                <li class="menu-item" data-id="rakomelo">
+                    <div class="item-header"><span class="item-name">RAKOMELO</span><span class="item-price">5 / 15 €</span></div>
+                    <p class="item-desc">4cl / 20cl (Raki au miel et à la cannelle)</p>
+                </li>
+
+                <h3 class="subsection-title">Les Boissons</h3>
+                <li class="menu-item" data-id="eau">
+                    <div class="item-header"><span class="item-name">EAU MINÉRALE / GAZEUSE</span><span class="item-price">2,50 €</span></div>
+                    <p class="item-desc">50cl</p>
+                </li>
+                <li class="menu-item" data-id="sodas">
+                    <div class="item-header"><span class="item-name">SODAS</span><span class="item-price">3 €</span></div>
+                    <p class="item-desc">Coca cola, Limonade citron, Thé pêche, Orangeade (33cl)</p>
+                </li>
+
+                <h3 class="subsection-title">La Bière Grecque</h3>
+                <li class="menu-item" data-id="mythos">
+                    <div class="item-header"><span class="item-name">MYTHOS</span><span class="item-price">4 €</span></div>
+                </li>
+
+                <h3 class="subsection-title">Boissons Chaudes</h3>
+                <li class="menu-item" data-id="cafe">
+                    <div class="item-header"><span class="item-name">CAFÉ NESPRESSO</span><span class="item-price">2,50 €</span></div>
                 </li>
             </ul>
 
@@ -459,12 +550,12 @@
     </div>
 
     <script>
-        // --- BASE DE DONNÉES DES PLATS (À personnaliser avec vos vraies images) ---
-        // Vous pouvez utiliser https://placehold.co/600x400 pour tester
+        // --- BASE DE DONNÉES DES PLATS ---
+        // Ajoutez ici vos images : img: "./nom-image.jpg"
         const dishesData = {
             "dolmades": {
                 title: "DOLMADES",
-                img: "https://placehold.co/600x400?text=Dolmades", // Remplacez par votre URL d'image
+                img: "https://placehold.co/600x400?text=Dolmades",
                 ingredients: "Feuilles de vigne, riz rond, oignons, aneth, menthe, citron, huile d'olive vierge extra, épices.",
                 allergens: "Sulfites (feuilles de vigne conservées).",
                 nutrition: { cal: "180 kcal", prot: "4 g", glu: "22 g", lip: "9 g" }
@@ -475,6 +566,13 @@
                 ingredients: "Oeufs de cabillaud fumés, huile de colza, chapelure (blé), citron, oignon.",
                 allergens: "Poisson, Gluten (blé).",
                 nutrition: { cal: "450 kcal", prot: "8 g", glu: "5 g", lip: "45 g" }
+            },
+            "dolmade1": {
+                title: "DOLMADES PETIT MÉZEDES",
+                img: "https://placehold.co/600x400?text=Mezedes",
+                ingredients: "Assortiment varié: Tzatziki, Tarama, Taboulé, Caviar d'aubergine, Féta, etc.",
+                allergens: "Lait, Gluten, Poisson, Sulfites.",
+                nutrition: { cal: "300 kcal", prot: "8 g", glu: "15 g", lip: "20 g" }
             },
             "moussaka": {
                 title: "MOUSSAKA",
@@ -490,6 +588,24 @@
                 allergens: "Lait, Fruits à coque (selon topping).",
                 nutrition: { cal: "130 kcal", prot: "6 g", glu: "14 g", lip: "8 g" }
             },
+
+            // --- PLATS RESTAURÉS ---
+            "taboule": { title: "TABOULÉ GREC", img: "https://placehold.co/600x400?text=Taboulé", ingredients: "Boulgour, persil, menthe, tomates...", allergens: "Gluten", nutrition: { cal: "200", prot: "5", glu: "30", lip: "8" } },
+            "assortiment": { title: "ASSORTIMENT DE 4 MÉZÉS", img: "https://placehold.co/600x400?text=4+Mezes", ingredients: "Tzatziki, Tarama, Dolmades, Hommos", allergens: "Lait, Gluten, Sésame, Poisson", nutrition: { cal: "400", prot: "10", glu: "20", lip: "30" } },
+
+            "imam": { title: "IMAM", img: "https://placehold.co/600x400?text=Imam", ingredients: "Aubergine, tomates, oignons, huile d'olive", allergens: "Aucun", nutrition: { cal: "250", prot: "4", glu: "12", lip: "20" } },
+            "papoutsakia": { title: "PAPOUTSAKIA", img: "https://placehold.co/600x400?text=Papoutsakia", ingredients: "Aubergine, viande hachée, béchamel", allergens: "Lait, Gluten, Oeufs", nutrition: { cal: "380", prot: "14", glu: "15", lip: "25" } },
+            "soutsoukakia": { title: "SOUTSOUKAKIA", img: "https://placehold.co/600x400?text=Soutsoukakia", ingredients: "Boulettes de boeuf, sauce tomate, cumin", allergens: "Gluten (si chapelure)", nutrition: { cal: "320", prot: "20", glu: "10", lip: "18" } },
+            "keftedes": { title: "KEFTEDES", img: "https://placehold.co/600x400?text=Keftedes", ingredients: "Viande de boeuf, herbes ou courgette/feta", allergens: "Lait, Oeufs, Gluten", nutrition: { cal: "280", prot: "18", glu: "8", lip: "16" } },
+            "salade-calamar": { title: "CALAMAR FARCI", img: "https://placehold.co/600x400?text=Calamar", ingredients: "Calamar, riz, crevettes, pignons", allergens: "Mollusques, Crustacés", nutrition: { cal: "300", prot: "25", glu: "20", lip: "12" } },
+            "piperia": { title: "PIPERIA", img: "https://placehold.co/600x400?text=Piperia", ingredients: "Poivron, viande hachée, riz, aneth", allergens: "Aucun", nutrition: { cal: "260", prot: "15", glu: "25", lip: "10" } },
+
+            "patisserie": { title: "PÂTISSERIE GRECQUE", img: "https://placehold.co/600x400?text=Patisserie", ingredients: "Pâte filo, noix, miel, beurre", allergens: "Gluten, Lait, Fruits à coque", nutrition: { cal: "450", prot: "6", glu: "40", lip: "28" } },
+            "portokalopita": { title: "PORTOKALOPITA", img: "https://placehold.co/600x400?text=Portokalopita", ingredients: "Orange, pâte filo, yaourt", allergens: "Gluten, Lait, Oeufs", nutrition: { cal: "380", prot: "5", glu: "50", lip: "15" } },
+            "galaktobureko": { title: "GALAKTOBUREKO", img: "https://placehold.co/600x400?text=Galaktobureko", ingredients: "Semoule, lait, oeufs, pâte filo", allergens: "Gluten, Lait, Oeufs", nutrition: { cal: "350", prot: "8", glu: "45", lip: "12" } },
+            "chocolatopita": { title: "CHOCOLATOPITA", img: "https://placehold.co/600x400?text=Chocolatopita", ingredients: "Chocolat, pâte filo", allergens: "Gluten, Lait, Soja", nutrition: { cal: "420", prot: "6", glu: "48", lip: "22" } },
+            "cafe-gourmand": { title: "CAFÉ GOURMAND", img: "https://placehold.co/600x400?text=Cafe+Gourmand", ingredients: "Café + mignardises", allergens: "Voir pâtisseries", nutrition: { cal: "150", prot: "2", glu: "20", lip: "5" } },
+
             // Fallback pour les items sans ID spécifique ou non définis
             "default": {
                 title: "DÉTAILS DU PLAT",
@@ -523,7 +639,7 @@
         // --- GESTION MODALE PLATS ---
         const dishModal = document.getElementById('dish-modal');
         const menuItems = document.querySelectorAll('.menu-item');
-        
+
         // Elements de la modale à mettre à jour
         const mImg = document.getElementById('modal-img');
         const mTitle = document.getElementById('modal-title');
@@ -539,7 +655,7 @@
                 const id = item.getAttribute('data-id');
                 // Récupère les données ou utilise le default
                 const data = dishesData[id] || dishesData["default"];
-                
+
                 // Si pas de données spécifiques et pas default, on prend le titre du HTML
                 if (!dishesData[id]) {
                     data.title = item.querySelector('.item-name').innerText;
