@@ -4,19 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Maison des Cyclades</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- CHARGEMENT DE LA POLICE LOCALE (IMPACT) --- */
+        /* --- CHARGEMENT SÉCURISÉ DE LA POLICE --- */
         @font-face {
             font-family: 'CustomImpact';
-            /* Le fichier doit s'appeler exactement impact.ttf et être à côté du index.html */
-            src: url('./impact.ttf') format('truetype');
+            /* Assurez-vous que le fichier impact.ttf est bien sur GitHub */
+            src: url('impact.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
+            font-display: swap;
         }
 
         /* --- RESET & VARIABLES --- */
@@ -30,12 +32,11 @@
 
         :root {
             --blue: #19539D;
-            --blue-light-border: #9cb5d3; 
+            --blue-light-border: #9cb5d3;
             --yellow: #FFD72E;
             --bg-light: #F8FEFF;
             --font-main: 'Poppins', sans-serif;
-            /* On utilise maintenant votre fichier local */
-            --font-title: 'CustomImpact', sans-serif; 
+            --font-title: 'CustomImpact', sans-serif;
         }
 
         body {
@@ -56,14 +57,119 @@
             overflow-x: hidden;
         }
 
-        /* --- HEADER IMAGE --- */
-        .header-image {
+        /* --- HEADER IMAGE & BOUTON CERTIFS --- */
+        .header-container {
+            position: relative;
             width: 100%;
             height: 240px;
+        }
+
+        .header-image {
+            width: 100%;
+            height: 100%;
             background-image: url('cyclades-02.jpg');
             background-size: cover;
             background-position: center;
-            background-color: #2c2c2c; 
+            background-color: #2c2c2c;
+        }
+
+        /* STYLE DU BOUTON CERTIFS MODIFIÉ (Plus petit, bonne icône) */
+        .certifs-btn {
+            position: absolute;
+            bottom: 45px; /* Position ajustée */
+            left: 20px;
+            background-color: var(--blue);
+            color: white;
+            /* Padding réduit pour un bouton plus fin */
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            /* Espace réduit entre icône et texte */
+            gap: 6px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+            z-index: 15;
+            text-transform: uppercase;
+            /* Taille de police réduite */
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Ajustement de la taille de l'icône */
+        .certifs-btn i {
+            font-size: 13px;
+        }
+
+        /* --- MODALE CERTIFICATIONS --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            width: 85%;
+            max-width: 320px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            color: var(--blue);
+            cursor: pointer;
+        }
+
+        .modal-title {
+            color: var(--blue);
+            font-family: var(--font-title);
+            font-weight: normal;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .certifs-list {
+            list-style: none;
+        }
+
+        .certif-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: var(--blue);
+            font-weight: 600;
+        }
+
+        .certif-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-light);
+            border-radius: 50%;
+            font-size: 16px;
         }
 
         /* --- CARTE BLANCHE PRINCIPALE --- */
@@ -80,7 +186,7 @@
         /* --- TITRE RESTAURANT --- */
         h1 {
             font-family: var(--font-title);
-            font-weight: normal; /* Impact est déjà gras par nature */
+            font-weight: normal;
             color: var(--blue);
             font-size: 32px;
             text-transform: uppercase;
@@ -103,7 +209,7 @@
             opacity: 1;
         }
 
-        /* --- INFO CONTACT --- */
+        /* --- INFO CONTACT (MODIFIÉ POUR LES LIENS) --- */
         .contact-row {
             display: flex;
             align-items: center;
@@ -112,6 +218,13 @@
             font-weight: 700;
             font-size: 15px;
             padding-left: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .contact-row:active {
+            opacity: 0.7;
         }
 
         .contact-icon {
@@ -153,14 +266,14 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
-        
+
         .nav-scroll::-webkit-scrollbar {
             display: none;
         }
 
         .nav-item {
             font-family: var(--font-title);
-            font-size: 24px; /* Ajusté légèrement car Impact est grand */
+            font-size: 24px;
             text-transform: uppercase;
             color: var(--blue);
             text-decoration: none;
@@ -229,7 +342,7 @@
         }
 
         /* --- STYLES SPÉCIFIQUES --- */
-        
+
         .info-note {
             color: var(--blue);
             font-size: 14px;
@@ -253,7 +366,7 @@
             text-underline-offset: 4px;
             text-decoration-color: var(--blue);
         }
-        
+
         .subsection-title:first-child {
             margin-top: 0;
         }
@@ -263,26 +376,60 @@
 <body>
 
     <div class="mobile-container">
-        <div class="header-image"></div>
+        <div class="header-container">
+            <div class="header-image"></div>
+            <div class="certifs-btn" id="open-certifs">
+                <i class="fas fa-certificate"></i> CERTIFS
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="certifs-modal">
+            <div class="modal-content">
+                <span class="modal-close" id="close-certifs">&times;</span>
+                <h2 class="modal-title">NOS CERTIFICATIONS</h2>
+                <ul class="certifs-list">
+                    <li class="certif-item">
+                        <div class="certif-icon"><i class="fas fa-shield-alt"></i></div>
+                        <span>Alim'Confiance</span>
+                    </li>
+                    <li class="certif-item">
+                        <div class="certif-icon"><i class="fas fa-hand-sparkles"></i></div>
+                        <span>Quality Hygiene</span>
+                    </li>
+                    <li class="certif-item">
+                        <div class="certif-icon"><i class="fas fa-check-circle"></i></div>
+                        <span>Halal AVS</span>
+                    </li>
+                    <li class="certif-item">
+                        <div class="certif-icon"><i class="fas fa-leaf"></i></div>
+                        <span>Produit Bio</span>
+                    </li>
+                    <li class="certif-item">
+                        <div class="certif-icon"><i class="fas fa-fish"></i></div>
+                        <span>Pêche MSC</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
         <div class="content-card">
-            
+
             <h1>La maison des cylades</h1>
             <div class="divider-yellow"></div>
 
-            <div class="contact-row">
+            <a href="tel:0895694412" class="contact-row">
                 <svg class="contact-icon" viewBox="0 0 512 512">
                     <path d="M493.4 24.6l-104-24c-11.3-2.6-22.9 3.3-27.5 13.9l-48 112c-4.2 9.8-1.4 21.3 6.9 28l60.6 49.6c-36 76.7-98.9 140.5-177.2 177.2l-49.6-60.6c-6.8-8.3-18.2-11.1-28-6.9l-112 48C3.9 366.5-2 378.1.6 389.4l24 104C27.1 504.2 36.7 512 48 512c256.1 0 464-207.5 464-464 0-11.2-7.7-20.9-18.6-23.4z"/>
                 </svg>
                 <span>08 95 69 44 12</span>
-            </div>
-            
-            <div class="contact-row">
+            </a>
+
+            <a href="https://www.google.com/maps/search/?api=1&query=19+rue+des+beaugrenelles+75012+Paris" target="_blank" class="contact-row">
                 <svg class="contact-icon" viewBox="0 0 384 512">
                     <path d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"/>
                 </svg>
                 <span>19 rue des beaugrenelles 75 012 Paris</span>
-            </div>
+            </a>
 
             <div class="nav-container">
                 <nav class="nav-scroll">
@@ -474,7 +621,7 @@
             </ul>
 
             <ul id="boissons" class="tab-content">
-                
+
                 <h3 class="subsection-title">Les Apéritifs</h3>
                 <li class="menu-item">
                     <div class="item-header">
@@ -551,29 +698,42 @@
     </div>
 
     <script>
-        // Sélection des éléments
+        // --- LOGIQUE DES ONGLETS (TABS) ---
         const navItems = document.querySelectorAll('.nav-item');
         const tabContents = document.querySelectorAll('.tab-content');
 
-        // Gestion du clic
         navItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
-
-                // 1. Mise à jour visuelle des boutons
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
-
-                // 2. Affichage du contenu
                 tabContents.forEach(content => content.classList.remove('active'));
-                
                 const targetId = item.getAttribute('data-target');
                 const targetContent = document.getElementById(targetId);
-                
                 if (targetContent) {
                     targetContent.classList.add('active');
                 }
             });
+        });
+
+        // --- LOGIQUE DE LA MODALE CERTIFS ---
+        const openCertifsBtn = document.getElementById('open-certifs');
+        const closeCertifsBtn = document.getElementById('close-certifs');
+        const certifsModal = document.getElementById('certifs-modal');
+
+        openCertifsBtn.addEventListener('click', () => {
+            certifsModal.classList.add('active');
+        });
+
+        closeCertifsBtn.addEventListener('click', () => {
+            certifsModal.classList.remove('active');
+        });
+
+        // Fermer la modale en cliquant en dehors du contenu
+        certifsModal.addEventListener('click', (e) => {
+            if (e.target === certifsModal) {
+                certifsModal.classList.remove('active');
+            }
         });
     </script>
 
