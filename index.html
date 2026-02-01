@@ -4,38 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Maison des Cyclades</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- CHARGEMENT SÉCURISÉ DE LA POLICE --- */
+        /* --- FONTS --- */
         @font-face {
             font-family: 'CustomImpact';
-            src: url('impact.ttf') format('truetype'); 
+            src: url('impact.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
             font-display: swap;
         }
 
-        /* --- RESET & VARIABLES --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-font-smoothing: antialiased;
-            -webkit-tap-highlight-color: transparent;
-        }
+        /* --- RESET --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
         :root {
             --blue: #19539D;
-            --blue-light-border: #9cb5d3; 
+            --blue-light-border: #9cb5d3;
             --yellow: #FFD72E;
             --bg-light: #F8FEFF;
             --font-main: 'Poppins', sans-serif;
-            --font-title: 'CustomImpact', sans-serif; 
+            --font-title: 'CustomImpact', sans-serif;
         }
 
         body {
@@ -46,7 +40,6 @@
             min-height: 100vh;
         }
 
-        /* --- CONTAINER MOBILE --- */
         .mobile-container {
             width: 375px;
             background-color: #fff;
@@ -56,24 +49,22 @@
             overflow-x: hidden;
         }
 
-        /* --- HEADER & SLIDER --- */
+        /* --- HEADER SLIDER --- */
         .header-container {
             position: relative;
             width: 100%;
             height: 240px;
             overflow: hidden;
-            cursor: grab; /* Curseur main pour indiquer qu'on peut glisser */
+            touch-action: pan-y;
+            cursor: grab;
         }
-        
-        .header-container:active {
-            cursor: grabbing;
-        }
+        .header-container:active { cursor: grabbing; }
 
         .slider-track {
             display: flex;
             width: 100%;
             height: 100%;
-            transition: transform 0.3s ease-out; /* Transition pour le mouvement */
+            transition: transform 0.3s ease-out;
         }
 
         .header-slide {
@@ -84,32 +75,7 @@
             background-color: #2c2c2c;
         }
 
-        /* INDICATEURS (POINTS) */
-        .slider-dots {
-            position: absolute;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 8px;
-            z-index: 20;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            background-color: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .dot.active {
-            background-color: var(--yellow);
-            transform: scale(1.2);
-        }
-
-        /* BOUTON CERTIFS (Repositionné pour ne pas gêner les dots) */
+        /* --- BOUTON CERTIFS --- */
         .certifs-btn {
             position: absolute;
             bottom: 45px;
@@ -124,72 +90,89 @@
             gap: 6px;
             cursor: pointer;
             box-shadow: 0 2px 4px rgba(0,0,0,0.25);
-            z-index: 15;
+            z-index: 50; /* Z-index augmenté pour être bien au-dessus */
             text-transform: uppercase;
             font-size: 12px;
             letter-spacing: 0.5px;
         }
         .certifs-btn i { font-size: 13px; }
 
-        /* --- LIGHTBOX (Zoom Image Header) --- */
+        /* --- LIGHTBOX (Zoom Slider) --- */
         #lightbox-modal {
-            background-color: rgba(0, 0, 0, 0.95);
-            z-index: 2000; /* Au-dessus de tout */
-        }
-        
-        #lightbox-img {
-            max-width: 100%;
-            max-height: 80vh;
-            object-fit: contain;
-            border-radius: 5px;
-        }
-
-        /* --- MODALES (Certifs & Plats) --- */
-        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.98);
+            z-index: 2000;
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.6);
-            z-index: 1000;
+            top: 0; left: 0; width: 100%; height: 100%;
+            flex-direction: column;
             justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(3px);
         }
 
+        #lightbox-modal.active { display: flex; }
+
+        .lightbox-track-container {
+            width: 100%;
+            height: 60vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .lightbox-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.3s ease-out;
+        }
+
+        .lightbox-slide {
+            min-width: 100%;
+            height: 100%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 30px;
+            padding: 20px;
+            cursor: pointer;
+            z-index: 2001;
+            opacity: 0.7;
+        }
+        .lightbox-nav:hover { opacity: 1; }
+        .lb-prev { left: 0; }
+        .lb-next { right: 0; }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 35px;
+            cursor: pointer;
+            z-index: 2002;
+            padding: 10px;
+        }
+
+        /* --- AUTRES MODALES --- */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6); z-index: 1000;
+            justify-content: center; align-items: center; backdrop-filter: blur(3px);
+        }
         .modal-overlay.active { display: flex; }
 
         .modal-content {
-            background-color: white;
-            border-radius: 20px;
-            width: 85%;
-            max-width: 320px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            animation: slideUp 0.3s ease-out;
-            max-height: 90vh;
-            overflow-y: auto;
+            background-color: white; border-radius: 20px; width: 85%; max-width: 320px;
+            position: relative; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: slideUp 0.3s ease-out; max-height: 90vh; overflow-y: auto;
         }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 28px;
-            color: white;
-            cursor: pointer;
-            z-index: 20;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-            line-height: 1;
-        }
+        .modal-close { position: absolute; top: 10px; right: 15px; font-size: 28px; color: white; cursor: pointer; z-index: 20; text-shadow: 0 2px 4px rgba(0,0,0,0.5); line-height: 1; }
 
         /* Styles spécifiques Modale PLAT */
         .dish-image { width: 100%; height: 180px; object-fit: cover; background-color: #eee; }
@@ -198,19 +181,17 @@
         .dish-section-title { color: var(--yellow); font-weight: 700; text-transform: uppercase; font-size: 14px; margin-top: 15px; margin-bottom: 5px; }
         .dish-text { font-size: 13px; color: #555; line-height: 1.4; }
 
-        /* Accordéon Nutrition */
         .nutrition-toggle { background-color: var(--bg-light); color: var(--blue); padding: 12px; border-radius: 8px; margin-top: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 14px; }
         .nutrition-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; background-color: #f9f9f9; border-radius: 0 0 8px 8px; padding: 0 12px; }
         .nutrition-content.open { max-height: 150px; padding-bottom: 12px; }
         .nutrition-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 13px; color: #555; }
 
-        /* Certifs Modal Styles */
         .modal-title-certif { color: var(--blue); font-family: var(--font-title); text-align: center; margin: 20px 0; font-size: 24px; }
         .certifs-list { list-style: none; padding: 0 20px 20px 20px; }
         .certif-item { display: flex; align-items: center; margin-bottom: 15px; color: var(--blue); font-weight: 600; }
         .certif-icon { width: 30px; height: 30px; margin-right: 15px; display: flex; justify-content: center; align-items: center; background-color: var(--bg-light); border-radius: 50%; font-size: 16px; }
 
-        /* --- CARTE BLANCHE PRINCIPALE --- */
+        /* --- PAGE PRINCIPALE --- */
         .content-card { background-color: var(--bg-light); border-radius: 25px 25px 0 0; margin-top: -35px; position: relative; padding: 25px 20px 60px 20px; z-index: 10; min-height: 600px; }
         h1 { font-family: var(--font-title); font-weight: normal; color: var(--blue); font-size: 32px; text-transform: uppercase; text-align: center; margin-bottom: 5px; letter-spacing: 0.5px; line-height: 1.1; }
         .divider-yellow { width: 100%; height: 2px; background-image: linear-gradient(to right, var(--yellow) 70%, rgba(255, 255, 255, 0) 0%); background-position: bottom; background-size: 12px 2px; background-repeat: repeat-x; border: none; margin: 10px 0 18px 0; }
@@ -219,7 +200,6 @@
         .contact-icon { width: 20px; height: 20px; fill: var(--blue); margin-right: 15px; flex-shrink: 0; }
         .icon-flip { transform: scaleX(-1); }
 
-        /* --- NAVIGATION --- */
         .nav-container { position: relative; margin: 20px 0 30px 0; width: 100%; }
         .nav-container::before, .nav-container::after { content: ''; position: absolute; left: 0; width: 100%; height: 2px; background-image: linear-gradient(to right, var(--blue-light-border) 60%, rgba(255, 255, 255, 0) 0%); background-size: 14px 2px; background-repeat: repeat-x; z-index: 2; }
         .nav-container::before { top: 0; } .nav-container::after { bottom: 0; }
@@ -228,7 +208,6 @@
         .nav-item { font-family: var(--font-title); font-size: 24px; text-transform: uppercase; color: var(--blue); text-decoration: none; letter-spacing: 0.5px; flex-shrink: 0; cursor: pointer; transition: color 0.2s ease; }
         .nav-item.active { color: var(--yellow); }
 
-        /* --- CONTENU TABS & LISTE --- */
         .tab-content { display: none; list-style: none; animation: fadeIn 0.3s ease-in-out; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
@@ -247,17 +226,12 @@
 <body>
 
     <div class="mobile-container">
-        <div class="header-container" id="slider-container">
-            <div class="slider-track" id="header-slider">
+
+        <div class="header-container" id="header-container">
+            <div class="slider-track" id="header-track">
                 <div class="header-slide" style="background-image: url('cyclades-02.jpg');" data-full="cyclades-02.jpg"></div>
                 <div class="header-slide" style="background-image: url('https://placehold.co/600x400?text=Interieur');" data-full="https://placehold.co/600x400?text=Interieur"></div>
                 <div class="header-slide" style="background-image: url('https://placehold.co/600x400?text=Cuisine');" data-full="https://placehold.co/600x400?text=Cuisine"></div>
-            </div>
-
-            <div class="slider-dots" id="slider-dots">
-                <div class="dot active" data-index="0"></div>
-                <div class="dot" data-index="1"></div>
-                <div class="dot" data-index="2"></div>
             </div>
 
             <div class="certifs-btn" id="open-certifs">
@@ -266,9 +240,17 @@
         </div>
 
         <div class="modal-overlay" id="lightbox-modal">
-            <div class="modal-content" style="background: transparent; box-shadow: none; width: 100%; max-width: 100%; display: flex; justify-content: center; align-items: center;">
-                <span class="modal-close" id="close-lightbox" style="position: fixed; top: 20px; right: 20px;">×</span>
-                <img src="" id="lightbox-img" alt="Zoom">
+            <span class="lightbox-close" id="close-lightbox">×</span>
+
+            <div class="lightbox-nav lb-prev" id="lb-prev"><i class="fas fa-chevron-left"></i></div>
+            <div class="lightbox-nav lb-next" id="lb-next"><i class="fas fa-chevron-right"></i></div>
+
+            <div class="lightbox-track-container" id="lightbox-container">
+                <div class="lightbox-track" id="lightbox-track">
+                    <div class="lightbox-slide" style="background-image: url('cyclades-02.jpg');"></div>
+                    <div class="lightbox-slide" style="background-image: url('https://placehold.co/600x400?text=Interieur');"></div>
+                    <div class="lightbox-slide" style="background-image: url('https://placehold.co/600x400?text=Cuisine');"></div>
+                </div>
             </div>
         </div>
 
@@ -335,149 +317,57 @@
 
             <ul id="menu" class="tab-content">
                 <div class="info-note">NOS MENUS SONT SERVIS DU :<br>MARDI AU VENDREDI DE 12:00 À 14:00</div>
-                <li class="menu-item" data-id="menu-ios">
-                    <div class="item-header"><span class="item-name">MENU IOS</span><span class="item-price">13,50 €</span></div>
-                    <p class="item-desc">(par personne)<br>Entrée + Plat ou Plat + Dessert</p>
-                </li>
-                <li class="menu-item" data-id="menu-santorini">
-                    <div class="item-header"><span class="item-name">MENU SANTORINI</span><span class="item-price">16,50 €</span></div>
-                    <p class="item-desc">(par personne)<br>Entrée + Plat + Dessert</p>
-                </li>
+                <li class="menu-item" data-id="menu-ios"><div class="item-header"><span class="item-name">MENU IOS</span><span class="item-price">13,50 €</span></div><p class="item-desc">(par personne)<br>Entrée + Plat ou Plat + Dessert</p></li>
+                <li class="menu-item" data-id="menu-santorini"><div class="item-header"><span class="item-name">MENU SANTORINI</span><span class="item-price">16,50 €</span></div><p class="item-desc">(par personne)<br>Entrée + Plat + Dessert</p></li>
             </ul>
-
             <ul id="entree" class="tab-content active">
-                <li class="menu-item" data-id="dolmades">
-                    <div class="item-header"><span class="item-name">DOLMADES</span><span class="item-price">6 €</span></div>
-                    <p class="item-desc">Feuilles de vignes farcies aux riz sur un lit de tzatziki au yaourt grec</p>
-                </li>
-                <li class="menu-item" data-id="tarama">
-                    <div class="item-header"><span class="item-name">ASSIETTE DE TARAMA OU TZATZIKI</span><span class="item-price">6 €</span></div>
-                    <p class="item-desc">Mézé grec</p>
-                </li>
-                <li class="menu-item" data-id="dolmade1">
-                    <div class="item-header"><span class="item-name">DOLMADE1 PETIT MÉZEDES</span><span class="item-price">4.50 €</span></div>
-                    <p class="item-desc">Tzatziki, Tarama, Taboulé, Caviar d'aubergine, Chypriote, Féta, Caviar d'artichauts, Hommos, Ktipiti, Olives</p>
-                </li>
-                <li class="menu-item" data-id="xoriatiki">
-                    <div class="item-header"><span class="item-name">SALADE GRECQUE « XORIATIKI »</span><span class="item-price">7 €</span></div>
-                    <p class="item-desc">Salade de tomates, concombres, olives, féta, câpres et huile d'olive</p>
-                </li>
-                <li class="menu-item" data-id="taboule">
-                    <div class="item-header"><span class="item-name">TABOULÉ GREC</span><span class="item-price">7 €</span></div>
-                    <p class="item-desc">Persil, menthe, tomates, boulgour *supplément de 1€ pour les menus</p>
-                </li>
-                <li class="menu-item" data-id="assortiment">
-                    <div class="item-header"><span class="item-name">ASSORTIMENT DE 4 MÉZÉS GRECS</span><span class="item-price">8 €</span></div>
-                    <p class="item-desc">Tzatziki, Tarama, 2 Dolmades, Hommos</p>
-                </li>
+                <li class="menu-item" data-id="dolmades"><div class="item-header"><span class="item-name">DOLMADES</span><span class="item-price">6 €</span></div><p class="item-desc">Feuilles de vignes farcies aux riz sur un lit de tzatziki au yaourt grec</p></li>
+                <li class="menu-item" data-id="tarama"><div class="item-header"><span class="item-name">ASSIETTE DE TARAMA OU TZATZIKI</span><span class="item-price">6 €</span></div><p class="item-desc">Mézé grec</p></li>
+                <li class="menu-item" data-id="dolmade1"><div class="item-header"><span class="item-name">DOLMADE1 PETIT MÉZEDES</span><span class="item-price">4.50 €</span></div><p class="item-desc">Tzatziki, Tarama, Taboulé, Caviar d'aubergine, Chypriote, Féta, etc.</p></li>
+                <li class="menu-item" data-id="xoriatiki"><div class="item-header"><span class="item-name">SALADE GRECQUE « XORIATIKI »</span><span class="item-price">7 €</span></div><p class="item-desc">Salade de tomates, concombres, olives, féta, câpres et huile d'olive</p></li>
+                <li class="menu-item" data-id="taboule"><div class="item-header"><span class="item-name">TABOULÉ GREC</span><span class="item-price">7 €</span></div><p class="item-desc">Persil, menthe, tomates, boulgour *supplément de 1€ pour les menus</p></li>
+                <li class="menu-item" data-id="assortiment"><div class="item-header"><span class="item-name">ASSORTIMENT DE 4 MÉZÉS GRECS</span><span class="item-price">8 €</span></div><p class="item-desc">Tzatziki, Tarama, 2 Dolmades, Hommos</p></li>
             </ul>
-
             <ul id="plats" class="tab-content">
-                <div class="info-note">Avec les accompagnements du jour : Kritharaki (pâtes grecques à la tomates et aux herbes), Fassolia (haricots blancs géants à la tomates et à l'aneth), Salade de Serifos (lentilles, féta, persils, poivrons et raisins de Corinthe)</div>
-                <li class="menu-item" data-id="moussaka">
-                    <div class="item-header"><span class="item-name">MOUSSAKA</span><span class="item-price">10 €</span></div>
-                    <p class="item-desc">Lamelles d'aubergines, viande de bœuf hachée et béchamel</p>
-                </li>
-                <li class="menu-item" data-id="imam">
-                    <div class="item-header"><span class="item-name">IMAM</span><span class="item-price">10 €</span></div>
-                    <p class="item-desc">Aubergine farcie à la tomate, aux oignons et aux pignons de pin</p>
-                </li>
-                <li class="menu-item" data-id="papoutsakia">
-                    <div class="item-header"><span class="item-name">PAPOUTSAKIA</span><span class="item-price">10 €</span></div>
-                    <p class="item-desc">Aubergine farcie à la viande et béchamel</p>
-                </li>
-                <li class="menu-item" data-id="soutsoukakia">
-                    <div class="item-header"><span class="item-name">SOUTSOUKAKIA</span><span class="item-price">10 €</span></div>
-                    <p class="item-desc">Viande de bœuf parfumée aux épices grecques et à la sauce tomate</p>
-                </li>
-                <li class="menu-item" data-id="keftedes">
-                    <div class="item-header"><span class="item-name">KEFTEDES</span><span class="item-price">10 €</span></div>
-                    <p class="item-desc">3 boulettes aux choix : viande de bœuf aux herbes grecques ou courgette-feta</p>
-                </li>
-                <li class="menu-item" data-id="salade-calamar">
-                    <div class="item-header"><span class="item-name">SALADE</span><span class="item-price">11 €</span></div>
-                    <p class="item-desc">Calamar farci au riz, crevettes, pignons de pin et à la sauce tomate *supplément de 1€ pour les menus</p>
-                </li>
-                <li class="menu-item" data-id="piperia">
-                    <div class="item-header"><span class="item-name">PIPERIA</span><span class="item-price">11 €</span></div>
-                    <p class="item-desc">Poivron farci à la viande, pignons de pin, riz, menthe et aneth *supplément de 1€ pour les menus</p>
-                </li>
+                <div class="info-note">Avec les accompagnements du jour : Kritharaki, Fassolia, Salade de Serifos</div>
+                <li class="menu-item" data-id="moussaka"><div class="item-header"><span class="item-name">MOUSSAKA</span><span class="item-price">10 €</span></div><p class="item-desc">Lamelles d'aubergines, viande de bœuf hachée et béchamel</p></li>
+                <li class="menu-item" data-id="imam"><div class="item-header"><span class="item-name">IMAM</span><span class="item-price">10 €</span></div><p class="item-desc">Aubergine farcie à la tomate, aux oignons et aux pignons de pin</p></li>
+                <li class="menu-item" data-id="papoutsakia"><div class="item-header"><span class="item-name">PAPOUTSAKIA</span><span class="item-price">10 €</span></div><p class="item-desc">Aubergine farcie à la viande et béchamel</p></li>
+                <li class="menu-item" data-id="soutsoukakia"><div class="item-header"><span class="item-name">SOUTSOUKAKIA</span><span class="item-price">10 €</span></div><p class="item-desc">Viande de bœuf parfumée aux épices grecques et à la sauce tomate</p></li>
+                <li class="menu-item" data-id="keftedes"><div class="item-header"><span class="item-name">KEFTEDES</span><span class="item-price">10 €</span></div><p class="item-desc">3 boulettes aux choix : viande de bœuf aux herbes grecques ou courgette-feta</p></li>
+                <li class="menu-item" data-id="salade-calamar"><div class="item-header"><span class="item-name">SALADE</span><span class="item-price">11 €</span></div><p class="item-desc">Calamar farci au riz, crevettes, pignons de pin et à la sauce tomate</p></li>
+                <li class="menu-item" data-id="piperia"><div class="item-header"><span class="item-name">PIPERIA</span><span class="item-price">11 €</span></div><p class="item-desc">Poivron farci à la viande, pignons de pin, riz, menthe et aneth</p></li>
             </ul>
-
             <ul id="desserts" class="tab-content">
                 <div class="info-note" style="text-align: center;">TOUS NOS DESSERTS À 5€</div>
-                <li class="menu-item" data-id="yaourt">
-                    <div class="item-header"><span class="item-name">L'AUTHENTIQUE YAOURT GREC</span><span class="item-price">5 €</span></div>
-                    <p class="item-desc">Traditionnel. Servi avec son miel et ses pralines concassées</p>
-                </li>
-                <li class="menu-item" data-id="patisserie">
-                    <div class="item-header"><span class="item-name">1 PÂTISSERIE GRECQUE</span><span class="item-price">5 €</span></div>
-                    <p class="item-desc">Au choix : Baklava ou Kadaif ou Samousada ou Mélomakarona. Accompagné d'un Loukoum de Syros</p>
-                </li>
-                <li class="menu-item" data-id="portokalopita">
-                    <div class="item-header"><span class="item-name">PORTOKALOPITA</span><span class="item-price">5 €</span></div>
-                    <p class="item-desc">Gâteau à l'orange, pate filo</p>
-                </li>
-                <li class="menu-item" data-id="galaktobureko">
-                    <div class="item-header"><span class="item-name">GALAKTOBUREKO</span><span class="item-price">5 €</span></div>
-                    <p class="item-desc">Flan grec au lait parfumé secrètement</p>
-                </li>
-                <li class="menu-item" data-id="chocolatopita">
-                    <div class="item-header"><span class="item-name">CHOCOLATOPITA</span><span class="item-price">5 €</span></div>
-                    <p class="item-desc">Gâteau au chocolat merenda, pate filo</p>
-                </li>
-                <li class="menu-item" data-id="cafe-gourmand">
-                    <div class="item-header"><span class="item-name">CAFÉ GOURMAND</span><span class="item-price">5 €</span></div>
-                    <p class="item-desc">1 loukoum de syros ou 1 kourabie. Accompagné d'un rosekte à la canelle</p>
-                </li>
+                <li class="menu-item" data-id="yaourt"><div class="item-header"><span class="item-name">L'AUTHENTIQUE YAOURT GREC</span><span class="item-price">5 €</span></div><p class="item-desc">Traditionnel. Servi avec son miel et ses pralines concassées</p></li>
+                <li class="menu-item" data-id="patisserie"><div class="item-header"><span class="item-name">1 PÂTISSERIE GRECQUE</span><span class="item-price">5 €</span></div><p class="item-desc">Au choix : Baklava ou Kadaif ou Samousada ou Mélomakarona.</p></li>
+                <li class="menu-item" data-id="portokalopita"><div class="item-header"><span class="item-name">PORTOKALOPITA</span><span class="item-price">5 €</span></div><p class="item-desc">Gâteau à l'orange, pate filo</p></li>
+                <li class="menu-item" data-id="galaktobureko"><div class="item-header"><span class="item-name">GALAKTOBUREKO</span><span class="item-price">5 €</span></div><p class="item-desc">Flan grec au lait parfumé secrètement</p></li>
+                <li class="menu-item" data-id="chocolatopita"><div class="item-header"><span class="item-name">CHOCOLATOPITA</span><span class="item-price">5 €</span></div><p class="item-desc">Gâteau au chocolat merenda, pate filo</p></li>
+                <li class="menu-item" data-id="cafe-gourmand"><div class="item-header"><span class="item-name">CAFÉ GOURMAND</span><span class="item-price">5 €</span></div><p class="item-desc">1 loukoum de syros ou 1 kourabie. Accompagné d'un rosekte</p></li>
             </ul>
-
             <ul id="boissons" class="tab-content">
                 <h3 class="subsection-title">Les Apéritifs</h3>
-                <li class="menu-item" data-id="ouzo">
-                    <div class="item-header"><span class="item-name">OUZO PLOMARI</span><span class="item-price">4,50 / 14 €</span></div>
-                    <p class="item-desc">4cl / 20cl</p>
-                </li>
-                <li class="menu-item" data-id="muscat">
-                    <div class="item-header"><span class="item-name">MUSCAT DE SAMOS</span><span class="item-price">4,50 €</span></div>
-                    <p class="item-desc">6cl Grand cru</p>
-                </li>
+                <li class="menu-item" data-id="ouzo"><div class="item-header"><span class="item-name">OUZO PLOMARI</span><span class="item-price">4,50 / 14 €</span></div><p class="item-desc">4cl / 20cl</p></li>
+                <li class="menu-item" data-id="muscat"><div class="item-header"><span class="item-name">MUSCAT DE SAMOS</span><span class="item-price">4,50 €</span></div><p class="item-desc">6cl Grand cru</p></li>
                 <h3 class="subsection-title">Les Digestifs</h3>
-                <li class="menu-item" data-id="metaxa">
-                    <div class="item-header"><span class="item-name">METAXA</span><span class="item-price">4,50 €</span></div>
-                    <p class="item-desc">4cl</p>
-                </li>
-                <li class="menu-item" data-id="tsipouro">
-                    <div class="item-header"><span class="item-name">TSIPOURO</span><span class="item-price">4,50 €</span></div>
-                    <p class="item-desc">4cl (Eau de vie grecque)</p>
-                </li>
-                <li class="menu-item" data-id="rakomelo">
-                    <div class="item-header"><span class="item-name">RAKOMELO</span><span class="item-price">5 / 15 €</span></div>
-                    <p class="item-desc">4cl / 20cl (Raki au miel et à la cannelle)</p>
-                </li>
+                <li class="menu-item" data-id="metaxa"><div class="item-header"><span class="item-name">METAXA</span><span class="item-price">4,50 €</span></div><p class="item-desc">4cl</p></li>
+                <li class="menu-item" data-id="tsipouro"><div class="item-header"><span class="item-name">TSIPOURO</span><span class="item-price">4,50 €</span></div><p class="item-desc">4cl (Eau de vie grecque)</p></li>
+                <li class="menu-item" data-id="rakomelo"><div class="item-header"><span class="item-name">RAKOMELO</span><span class="item-price">5 / 15 €</span></div><p class="item-desc">4cl / 20cl (Raki au miel et à la cannelle)</p></li>
                 <h3 class="subsection-title">Les Boissons</h3>
-                <li class="menu-item" data-id="eau">
-                    <div class="item-header"><span class="item-name">EAU MINÉRALE / GAZEUSE</span><span class="item-price">2,50 €</span></div>
-                    <p class="item-desc">50cl</p>
-                </li>
-                <li class="menu-item" data-id="sodas">
-                    <div class="item-header"><span class="item-name">SODAS</span><span class="item-price">3 €</span></div>
-                    <p class="item-desc">Coca cola, Limonade citron, Thé pêche, Orangeade (33cl)</p>
-                </li>
+                <li class="menu-item" data-id="eau"><div class="item-header"><span class="item-name">EAU MINÉRALE / GAZEUSE</span><span class="item-price">2,50 €</span></div><p class="item-desc">50cl</p></li>
+                <li class="menu-item" data-id="sodas"><div class="item-header"><span class="item-name">SODAS</span><span class="item-price">3 €</span></div><p class="item-desc">Coca cola, Limonade citron, Thé pêche, Orangeade (33cl)</p></li>
                 <h3 class="subsection-title">La Bière Grecque</h3>
-                <li class="menu-item" data-id="mythos">
-                    <div class="item-header"><span class="item-name">MYTHOS</span><span class="item-price">4 €</span></div>
-                </li>
+                <li class="menu-item" data-id="mythos"><div class="item-header"><span class="item-name">MYTHOS</span><span class="item-price">4 €</span></div></li>
                 <h3 class="subsection-title">Boissons Chaudes</h3>
-                <li class="menu-item" data-id="cafe">
-                    <div class="item-header"><span class="item-name">CAFÉ NESPRESSO</span><span class="item-price">2,50 €</span></div>
-                </li>
+                <li class="menu-item" data-id="cafe"><div class="item-header"><span class="item-name">CAFÉ NESPRESSO</span><span class="item-price">2,50 €</span></div></li>
             </ul>
         </div>
     </div>
 
     <script>
-        // --- BASE DE DONNÉES DES PLATS ---
+        // --- DATA PLATS ---
         const dishesData = {
             "menu-ios": { title: "MENU IOS", img: "./menu-ios.AVIF", ingredients: "Entrée + Plat OU Plat + Dessert (au choix sur la carte)", allergens: "Dépend des plats choisis.", nutrition: { cal: "-", prot: "-", glu: "-", lip: "-" } },
             "menu-santorini": { title: "MENU SANTORINI", img: "./menu-santorini.WEBP", ingredients: "Entrée + Plat + Dessert (au choix sur la carte)", allergens: "Dépend des plats choisis.", nutrition: { cal: "-", prot: "-", glu: "-", lip: "-" } },
@@ -531,9 +421,16 @@
         const certifsModal = document.getElementById('certifs-modal');
         const dishModal = document.getElementById('dish-modal');
         const lightboxModal = document.getElementById('lightbox-modal');
-        const lightboxImg = document.getElementById('lightbox-img');
 
-        document.getElementById('open-certifs').addEventListener('click', () => certifsModal.classList.add('active'));
+        // Empêcher la propagation du clic sur le bouton CERTIFS
+        const certifsBtn = document.getElementById('open-certifs');
+        const stopProp = (e) => e.stopPropagation();
+        certifsBtn.addEventListener('mousedown', stopProp);
+        certifsBtn.addEventListener('touchstart', stopProp);
+        certifsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            certifsModal.classList.add('active');
+        });
 
         const menuItems = document.querySelectorAll('.menu-item');
         const mImg = document.getElementById('modal-img');
@@ -559,8 +456,7 @@
                 nGlu.innerText = data.nutrition.glu;
                 nLip.innerText = data.nutrition.lip;
                 document.getElementById('nutrition-content').classList.remove('open');
-                document.getElementById('nutrition-icon').classList.remove('fa-chevron-up');
-                document.getElementById('nutrition-icon').classList.add('fa-chevron-down');
+                document.getElementById('nutrition-icon').className = 'fas fa-chevron-down';
                 dishModal.classList.add('active');
             });
         });
@@ -584,122 +480,124 @@
         const nutriIcon = document.getElementById('nutrition-icon');
         nutriToggle.addEventListener('click', () => {
             nutriContent.classList.toggle('open');
-            if (nutriContent.classList.contains('open')) {
-                nutriIcon.classList.remove('fa-chevron-down');
-                nutriIcon.classList.add('fa-chevron-up');
-            } else {
-                nutriIcon.classList.remove('fa-chevron-up');
-                nutriIcon.classList.add('fa-chevron-down');
-            }
+            nutriIcon.className = nutriContent.classList.contains('open') ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
         });
 
-        // --- LOGIQUE DU SLIDER MANUEL (SWIPE) & LIGHTBOX ---
-        const sliderContainer = document.getElementById('slider-container');
-        const sliderTrack = document.getElementById('header-slider');
-        const slides = document.querySelectorAll('.header-slide');
-        const dots = document.querySelectorAll('.dot');
-        
-        let currentIndex = 0;
-        let startX = 0;
-        let currentTranslate = 0;
-        let prevTranslate = 0;
-        let isDragging = false;
-        let startPos = 0;
+        // --- FONCTION GÉNÉRIQUE DE SLIDER (Header + Lightbox) ---
+        function setupSlider(containerId, trackId, isLightbox = false) {
+            const container = document.getElementById(containerId);
+            const track = document.getElementById(trackId);
+            let slides = track.querySelectorAll(isLightbox ? '.lightbox-slide' : '.header-slide');
+            let currentIndex = 0;
+            let startX = 0;
+            let currentTranslate = 0;
+            let prevTranslate = 0;
+            let isDragging = false;
+            let startTime = 0;
 
-        // Désactiver le menu contextuel par défaut sur les images
-        sliderContainer.oncontextmenu = (e) => { e.preventDefault(); e.stopPropagation(); return false; };
+            const setPosition = () => {
+                const slideWidth = container.clientWidth;
+                currentTranslate = currentIndex * -slideWidth;
+                prevTranslate = currentTranslate;
+                track.style.transform = `translateX(${currentTranslate}px)`;
+            };
 
-        // Events
-        sliderContainer.addEventListener('touchstart', touchStart);
-        sliderContainer.addEventListener('touchend', touchEnd);
-        sliderContainer.addEventListener('touchmove', touchMove);
-        
-        sliderContainer.addEventListener('mousedown', touchStart);
-        sliderContainer.addEventListener('mouseup', touchEnd);
-        sliderContainer.addEventListener('mouseleave', () => { if(isDragging) touchEnd() });
-        sliderContainer.addEventListener('mousemove', touchMove);
-
-        // Gestion des Dots
-        dots.forEach(dot => {
-            dot.addEventListener('click', (e) => {
-                // Empêcher la propagation pour ne pas déclencher la lightbox
-                e.stopPropagation();
-                currentIndex = parseInt(e.target.getAttribute('data-index'));
-                updateSliderPosition();
+            // Touch events
+            container.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                startX = e.touches[0].clientX;
+                startTime = new Date().getTime();
+                container.style.cursor = 'grabbing';
             });
-        });
 
-        function touchStart(event) {
-            isDragging = true;
-            // Différencier souris et touch
-            if (event.type === 'touchstart') {
-                startX = event.touches[0].clientX;
-            } else {
-                startX = event.clientX;
-            }
-            startPos = startX;
-            sliderContainer.style.cursor = 'grabbing';
-        }
-
-        function touchMove(event) {
-            if (isDragging) {
-                let currentX;
-                if (event.type === 'touchmove') {
-                    currentX = event.touches[0].clientX;
-                } else {
-                    currentX = event.clientX;
-                }
+            container.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                const currentX = e.touches[0].clientX;
                 const diff = currentX - startX;
-                currentTranslate = prevTranslate + diff;
-                sliderTrack.style.transform = `translateX(${currentTranslate}px)`;
-            }
+                // Si le mouvement est horizontal, on preventDefault pour empêcher le scroll
+                if (Math.abs(diff) > 5) {
+                    if(e.cancelable) e.preventDefault();
+                }
+                track.style.transform = `translateX(${prevTranslate + diff}px)`;
+            });
+
+            container.addEventListener('touchend', (e) => {
+                if(!isDragging) return;
+                isDragging = false;
+                const movedBy = (e.changedTouches[0].clientX - startX);
+                const timeElapsed = new Date().getTime() - startTime;
+
+                // Détection du TAP (clic) pour ouvrir la lightbox
+                if (!isLightbox && Math.abs(movedBy) < 10 && timeElapsed < 300) {
+                    openLightbox(currentIndex);
+                    setPosition();
+                    return;
+                }
+
+                if (movedBy < -50 && currentIndex < slides.length - 1) currentIndex++;
+                else if (movedBy > 50 && currentIndex > 0) currentIndex--;
+
+                setPosition();
+                container.style.cursor = 'grab';
+            });
+
+            // Mouse events
+            container.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startX = e.clientX;
+                container.style.cursor = 'grabbing';
+                e.preventDefault();
+            });
+
+            container.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const diff = e.clientX - startX;
+                track.style.transform = `translateX(${prevTranslate + diff}px)`;
+            });
+
+            container.addEventListener('mouseup', (e) => {
+                if(!isDragging) return;
+                isDragging = false;
+                const movedBy = e.clientX - startX;
+
+                if (!isLightbox && Math.abs(movedBy) < 5) {
+                    openLightbox(currentIndex);
+                    setPosition();
+                    return;
+                }
+
+                if (movedBy < -50 && currentIndex < slides.length - 1) currentIndex++;
+                else if (movedBy > 50 && currentIndex > 0) currentIndex--;
+
+                setPosition();
+                container.style.cursor = 'grab';
+            });
+
+            container.addEventListener('mouseleave', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    setPosition();
+                    container.style.cursor = 'grab';
+                }
+            });
+
+            return {
+                goTo: (index) => { currentIndex = index; setPosition(); },
+                next: () => { if (currentIndex < slides.length - 1) { currentIndex++; setPosition(); } },
+                prev: () => { if (currentIndex > 0) { currentIndex--; setPosition(); } }
+            };
         }
 
-        function touchEnd(event) {
-            isDragging = false;
-            sliderContainer.style.cursor = 'grab';
-            
-            const movedBy = currentTranslate - prevTranslate;
-            
-            // Si on a bougé de moins de 5px, on considère que c'est un clic (pour ouvrir la lightbox)
-            if (Math.abs(movedBy) < 5 && event.type !== 'mouseleave') {
-                // Ouvrir Lightbox
-                const currentImgUrl = slides[currentIndex].getAttribute('data-full');
-                // Enlever l'url(...) pour juste avoir le lien
-                // Ou utiliser l'attribut data-full qu'on a mis dans le HTML
-                lightboxImg.src = currentImgUrl;
-                lightboxModal.classList.add('active');
-                
-                // Reset position car ce n'était pas un drag
-                updateSliderPosition();
-                return; 
-            }
+        const headerSlider = setupSlider('header-container', 'header-track');
+        const lightboxSlider = setupSlider('lightbox-container', 'lightbox-track', true);
 
-            // Seuil de changement de slide (100px)
-            if (movedBy < -50 && currentIndex < slides.length - 1) {
-                currentIndex += 1;
-            } else if (movedBy > 50 && currentIndex > 0) {
-                currentIndex -= 1;
-            }
-
-            updateSliderPosition();
+        function openLightbox(index) {
+            lightboxModal.classList.add('active');
+            setTimeout(() => { lightboxSlider.goTo(index); }, 10);
         }
 
-        function updateSliderPosition() {
-            // Largeur d'une slide = largeur du container
-            const slideWidth = sliderContainer.clientWidth;
-            currentTranslate = currentIndex * -slideWidth;
-            prevTranslate = currentTranslate;
-            
-            sliderTrack.style.transform = `translateX(${currentTranslate}px)`;
-            
-            // Update dots
-            dots.forEach(dot => dot.classList.remove('active'));
-            dots[currentIndex].classList.add('active');
-        }
-
-        // Adapter au redimensionnement de la fenêtre
-        window.addEventListener('resize', updateSliderPosition);
+        document.getElementById('lb-prev').addEventListener('click', (e) => { e.stopPropagation(); lightboxSlider.prev(); });
+        document.getElementById('lb-next').addEventListener('click', (e) => { e.stopPropagation(); lightboxSlider.next(); });
 
     </script>
 
