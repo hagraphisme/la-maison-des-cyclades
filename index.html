@@ -5,9 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Maison des Cyclades</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
+        /* --- CHARGEMENT DE LA POLICE LOCALE (IMPACT) --- */
+        @font-face {
+            font-family: 'CustomImpact';
+            /* Le fichier doit s'appeler exactement impact.ttf et être à côté du index.html */
+            src: url('./impact.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         /* --- RESET & VARIABLES --- */
         * {
             box-sizing: border-box;
@@ -23,7 +34,8 @@
             --yellow: #FFD72E;
             --bg-light: #F8FEFF;
             --font-main: 'Poppins', sans-serif;
-            --font-title: 'Impact', 'Haettenschweiler', 'Arial Narrow Bold', sans-serif;
+            /* On utilise maintenant votre fichier local */
+            --font-title: 'CustomImpact', sans-serif;
         }
 
         body {
@@ -68,6 +80,7 @@
         /* --- TITRE RESTAURANT --- */
         h1 {
             font-family: var(--font-title);
+            font-weight: normal; /* Impact est déjà gras par nature */
             color: var(--blue);
             font-size: 32px;
             text-transform: uppercase;
@@ -147,7 +160,7 @@
 
         .nav-item {
             font-family: var(--font-title);
-            font-size: 24px;
+            font-size: 24px; /* Ajusté légèrement car Impact est grand */
             text-transform: uppercase;
             color: var(--blue);
             text-decoration: none;
@@ -217,7 +230,6 @@
 
         /* --- STYLES SPÉCIFIQUES --- */
 
-        /* Note d'information (ex: horaires menu, accompagnements) */
         .info-note {
             color: var(--blue);
             font-size: 14px;
@@ -230,7 +242,6 @@
             line-height: 1.4;
         }
 
-        /* Sous-titres pour les boissons */
         .subsection-title {
             font-family: var(--font-title);
             color: var(--yellow);
