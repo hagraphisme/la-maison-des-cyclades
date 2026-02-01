@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Maison des Cyclades</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- RESET & VARIABLES --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --blue: #19539D;
+            --blue-light-border: #9cb5d3;
+            --yellow: #FFD72E;
+            --bg-light: #F8FEFF;
+            --font-main: 'Poppins', sans-serif;
+            --font-title: 'Impact', 'Haettenschweiler', 'Arial Narrow Bold', sans-serif;
+        }
+
+        body {
+            background-color: #e0e0e0;
+            font-family: var(--font-main);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* --- CONTAINER MOBILE 375px --- */
+        .mobile-container {
+            width: 375px;
+            background-color: #fff;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER IMAGE --- */
+        .header-image {
+            width: 100%;
+            height: 240px;
+            background-image: url('cyclades-02.jpg');
+            background-size: cover;
+            background-position: center;
+            background-color: #2c2c2c;
+        }
+
+        /* --- CARTE BLANCHE PRINCIPALE --- */
+        .content-card {
+            background-color: var(--bg-light);
+            border-radius: 25px 25px 0 0;
+            margin-top: -35px;
+            position: relative;
+            padding: 25px 20px 60px 20px;
+            z-index: 10;
+            min-height: 600px;
+        }
+
+        /* --- TITRE RESTAURANT --- */
+        h1 {
+            font-family: var(--font-title);
+            color: var(--blue);
+            font-size: 32px;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+        }
+
+        /* Ligne pointillée jaune */
+        .divider-yellow {
+            width: 100%;
+            height: 2px;
+            background-image: linear-gradient(to right, var(--yellow) 70%, rgba(255, 255, 255, 0) 0%);
+            background-position: bottom;
+            background-size: 12px 2px;
+            background-repeat: repeat-x;
+            border: none;
+            margin: 10px 0 18px 0;
+            opacity: 1;
+        }
+
+        /* --- INFO CONTACT --- */
+        .contact-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            color: var(--blue);
+            font-weight: 700;
+            font-size: 15px;
+            padding-left: 5px;
+        }
+
+        .contact-icon {
+            width: 20px;
+            height: 20px;
+            fill: var(--blue);
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        /* --- NAVIGATION (Structure Fixe + Scroll) --- */
+        .nav-container {
+            position: relative;
+            margin: 20px 0 30px 0;
+            width: 100%;
+        }
+
+        .nav-container::before, .nav-container::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-image: linear-gradient(to right, var(--blue-light-border) 60%, rgba(255, 255, 255, 0) 0%);
+            background-size: 14px 2px;
+            background-repeat: repeat-x;
+            z-index: 2;
+        }
+        .nav-container::before { top: 0; }
+        .nav-container::after { bottom: 0; }
+
+        .nav-scroll {
+            display: flex;
+            align-items: center;
+            overflow-x: auto;
+            white-space: nowrap;
+            gap: 25px;
+            padding: 14px 5px;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .nav-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-item {
+            font-family: var(--font-title);
+            font-size: 24px;
+            text-transform: uppercase;
+            color: var(--blue);
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .nav-item.active {
+            color: var(--yellow);
+        }
+
+        /* --- LOGIQUE DES ONGLETS (TABS) --- */
+        .tab-content {
+            display: none;
+            list-style: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- STYLE DES ITEMS DU MENU --- */
+        .menu-item {
+            margin-bottom: 24px;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 4px;
+        }
+
+        .item-name {
+            font-weight: 900;
+            color: var(--blue);
+            font-size: 17px;
+            text-transform: uppercase;
+            letter-spacing: -0.3px;
+            line-height: 1.1;
+            max-width: 80%;
+        }
+
+        .item-price {
+            font-weight: 900;
+            color: var(--blue);
+            font-size: 17px;
+            white-space: nowrap;
+            text-align: right;
+            margin-left: 10px;
+        }
+
+        .item-desc {
+            color: #5A7CA5;
+            font-size: 14px;
+            line-height: 1.35;
+            font-weight: 400;
+        }
+
+        /* --- STYLES SPÉCIFIQUES --- */
+
+        /* Note d'information (ex: horaires menu, accompagnements) */
+        .info-note {
+            color: var(--blue);
+            font-size: 14px;
+            font-weight: 700;
+            font-style: italic;
+            margin-bottom: 25px;
+            padding: 10px;
+            background-color: rgba(25, 83, 157, 0.05);
+            border-radius: 8px;
+            line-height: 1.4;
+        }
+
+        /* Sous-titres pour les boissons */
+        .subsection-title {
+            font-family: var(--font-title);
+            color: var(--yellow);
+            font-size: 20px;
+            text-transform: uppercase;
+            margin: 30px 0 15px 0;
+            letter-spacing: 0.5px;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            text-decoration-color: var(--blue);
+        }
+
+        .subsection-title:first-child {
+            margin-top: 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        <div class="header-image"></div>
+
+        <div class="content-card">
+
+            <h1>La maison des cylades</h1>
+            <div class="divider-yellow"></div>
+
+            <div class="contact-row">
+                <svg class="contact-icon" viewBox="0 0 512 512">
+                    <path d="M493.4 24.6l-104-24c-11.3-2.6-22.9 3.3-27.5 13.9l-48 112c-4.2 9.8-1.4 21.3 6.9 28l60.6 49.6c-36 76.7-98.9 140.5-177.2 177.2l-49.6-60.6c-6.8-8.3-18.2-11.1-28-6.9l-112 48C3.9 366.5-2 378.1.6 389.4l24 104C27.1 504.2 36.7 512 48 512c256.1 0 464-207.5 464-464 0-11.2-7.7-20.9-18.6-23.4z"/>
+                </svg>
+                <span>08 95 69 44 12</span>
+            </div>
+
+            <div class="contact-row">
+                <svg class="contact-icon" viewBox="0 0 384 512">
+                    <path d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"/>
+                </svg>
+                <span>19 rue des beaugrenelles 75 012 Paris</span>
+            </div>
+
+            <div class="nav-container">
+                <nav class="nav-scroll">
+                    <a class="nav-item" data-target="menu">MENU</a>
+                    <a class="nav-item active" data-target="entree">ENTRÉE</a>
+                    <a class="nav-item" data-target="plats">PLATS</a>
+                    <a class="nav-item" data-target="desserts">DESSERTS</a>
+                    <a class="nav-item" data-target="boissons">BOISSONS</a>
+                </nav>
+            </div>
+
+            <ul id="menu" class="tab-content">
+                <div class="info-note">
+                    NOS MENUS SONT SERVIS DU :<br>MARDI AU VENDREDI DE 12:00 À 14:00
+                </div>
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">MENU IOS</span>
+                        <span class="item-price">13,50 €</span>
+                    </div>
+                    <p class="item-desc">(par personne)<br>Entrée + Plat ou Plat + Dessert</p>
+                </li>
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">MENU SANTORINI</span>
+                        <span class="item-price">16,50 €</span>
+                    </div>
+                    <p class="item-desc">(par personne)<br>Entrée + Plat + Dessert</p>
+                </li>
+            </ul>
+
+            <ul id="entree" class="tab-content active">
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">DOLMADES</span>
+                        <span class="item-price">6 €</span>
+                    </div>
+                    <p class="item-desc">Feuilles de vignes farcies aux riz sur un lit de tzatziki au yaourt grec</p>
+                </li>
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">ASSIETTE DE TARAMA OU TZATZIKI</span>
+                        <span class="item-price">6 €</span>
+                    </div>
+                    <p class="item-desc">Mézé grec</p>
+                </li>
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">DOLMADE1 PETIT MÉZEDES</span>
+                        <span class="item-price">4.50 €</span>
+                    </div>
+                    <p class="item-desc">Tzatziki, Tarama, Taboulé, Caviar d'aubergine, Chypriote, Féta, Caviar d'artichauts, Hommos, Ktipiti, Olives</p>
+                </li>
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">SALADE GRECQUE « XORIATIKI »</span>
+                        <span class="item-price">7 €</span>
+                    </div>
+                    <p class="item-desc">Salade de tomates, concombres, olives, féta, câpres et huile d'olive</p>
+                </li>
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">TABOULÉ GREC</span>
+                        <span class="item-price">7 €</span>
+                    </div>
+                    <p class="item-desc">Persil, menthe, tomates, boulgour *supplément de 1€ pour les menus</p>
+                </li>
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">ASSORTIMENT DE 4 MÉZÉS GRECS</span>
+                        <span class="item-price">8 €</span>
+                    </div>
+                    <p class="item-desc">Tzatziki, Tarama, 2 Dolmades, Hommos</p>
+                </li>
+            </ul>
+
+            <ul id="plats" class="tab-content">
+                <div class="info-note">
+                    Avec les accompagnements du jour : Kritharaki (pâtes grecques à la tomates et aux herbes), Fassolia (haricots blancs géants à la tomates et à l'aneth), Salade de Serifos (lentilles, féta, persils, poivrons et raisins de Corinthe)
+                </div>
+
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">MOUSSAKA</span>
+                        <span class="item-price">10 €</span>
+                    </div>
+                    <p class="item-desc">Lamelles d'aubergines, viande de bœuf hachée et béchamel</p>
+                </li>
+
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">IMAM</span>
+                        <span class="item-price">10 €</span>
+                    </div>
+                    <p class="item-desc">Aubergine farcie à la tomate, aux oignons et aux pignons de pin</p>
+                </li>
+
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">PAPOUTSAKIA</span>
+                        <span class="item-price">10 €</span>
+                    </div>
+                    <p class="item-desc">Aubergine farcie à la viande et béchamel</p>
+                </li>
+
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">SOUTSOUKAKIA</span>
+                        <span class="item-price">10 €</span>
+                    </div>
+                    <p class="item-desc">Viande de bœuf parfumée aux épices grecques et à la sauce tomate</p>
+                </li>
+
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">KEFTEDES</span>
+                        <span class="item-price">10 €</span>
+                    </div>
+                    <p class="item-desc">3 boulettes aux choix : viande de bœuf aux herbes grecques ou courgette-feta</p>
+                </li>
+
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">SALADE</span>
+                        <span class="item-price">11 €</span>
+                    </div>
+                    <p class="item-desc">Calamar farci au riz, crevettes, pignons de pin et à la sauce tomate *supplément de 1€ pour les menus</p>
+                </li>
+
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">PIPERIA</span>
+                        <span class="item-price">11 €</span>
+                    </div>
+                    <p class="item-desc">Poivron farci à la viande, pignons de pin, riz, menthe et aneth *supplément de 1€ pour les menus</p>
+                </li>
+            </ul>
+
+            <ul id="desserts" class="tab-content">
+                <div class="info-note" style="text-align: center;">TOUS NOS DESSERTS À 5€</div>
+
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">L'AUTHENTIQUE YAOURT GREC</span>
+                        <span class="item-price">5 €</span>
+                    </div>
+                    <p class="item-desc">Traditionnel. Servi avec son miel et ses pralines concassées</p>
+                </li>
+
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">1 PÂTISSERIE GRECQUE</span>
+                        <span class="item-price">5 €</span>
+                    </div>
+                    <p class="item-desc">Au choix : Baklava ou Kadaif ou Samousada ou Mélomakarona. Accompagné d'un Loukoum de Syros</p>
+                </li>
+
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">PORTOKALOPITA</span>
+                        <span class="item-price">5 €</span>
+                    </div>
+                    <p class="item-desc">Gâteau à l'orange, pate filo</p>
+                </li>
+
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">GALAKTOBUREKO</span>
+                        <span class="item-price">5 €</span>
+                    </div>
+                    <p class="item-desc">Flan grec au lait parfumé secrètement</p>
+                </li>
+
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">CHOCOLATOPITA</span>
+                        <span class="item-price">5 €</span>
+                    </div>
+                    <p class="item-desc">Gâteau au chocolat merenda, pate filo</p>
+                </li>
+
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">CAFÉ GOURMAND</span>
+                        <span class="item-price">5 €</span>
+                    </div>
+                    <p class="item-desc">1 loukoum de syros ou 1 kourabie. Accompagné d'un rosekte à la canelle</p>
+                </li>
+            </ul>
+
+            <ul id="boissons" class="tab-content">
+
+                <h3 class="subsection-title">Les Apéritifs</h3>
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">OUZO PLOMARI</span>
+                        <span class="item-price">4,50 / 14 €</span>
+                    </div>
+                    <p class="item-desc">4cl / 20cl</p>
+                </li>
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">MUSCAT DE SAMOS</span>
+                        <span class="item-price">4,50 €</span>
+                    </div>
+                    <p class="item-desc">6cl Grand cru</p>
+                </li>
+
+                <h3 class="subsection-title">Les Digestifs</h3>
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">METAXA</span>
+                        <span class="item-price">4,50 €</span>
+                    </div>
+                    <p class="item-desc">4cl</p>
+                </li>
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">TSIPOURO</span>
+                        <span class="item-price">4,50 €</span>
+                    </div>
+                    <p class="item-desc">4cl (Eau de vie grecque)</p>
+                </li>
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">RAKOMELO</span>
+                        <span class="item-price">5 / 15 €</span>
+                    </div>
+                    <p class="item-desc">4cl / 20cl (Raki au miel et à la cannelle)</p>
+                </li>
+
+                <h3 class="subsection-title">Les Boissons</h3>
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">EAU MINÉRALE / GAZEUSE</span>
+                        <span class="item-price">2,50 €</span>
+                    </div>
+                    <p class="item-desc">50cl</p>
+                </li>
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">SODAS</span>
+                        <span class="item-price">3 €</span>
+                    </div>
+                    <p class="item-desc">Coca cola, Limonade citron, Thé pêche, Orangeade (33cl)</p>
+                </li>
+
+                <h3 class="subsection-title">La Bière Grecque</h3>
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">MYTHOS</span>
+                        <span class="item-price">4 €</span>
+                    </div>
+                </li>
+
+                <h3 class="subsection-title">Boissons Chaudes</h3>
+                <li class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">CAFÉ NESPRESSO</span>
+                        <span class="item-price">2,50 €</span>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+    <script>
+        // Sélection des éléments
+        const navItems = document.querySelectorAll('.nav-item');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        // Gestion du clic
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                // 1. Mise à jour visuelle des boutons
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+
+                // 2. Affichage du contenu
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                const targetId = item.getAttribute('data-target');
+                const targetContent = document.getElementById(targetId);
+
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
